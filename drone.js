@@ -118,35 +118,40 @@ app.post('/gunther', function(req, res) {
       });
       break;
     case 'turnLeft':
-      gunther.turnLeft({speed: 100, steps: 25},function(){
+      gunther.turnLeft({speed: 40, steps: 25},function(){
         res.send(JSON.parse('{"response": "turnLeft"}'));
       });
       break;
     case 'turnRight':
-      gunther.turnRight({speed: 100, steps: 25},function(){
+      gunther.turnRight({speed: 40, steps: 25},function(){
         res.send(JSON.parse('{"response": "turnRight"}'));
       });
       break;
+    //Looks like the callbacks returned by flips cause some issues with the headers. Perhaps they are firing to many times in
+    //succession. Will now only allow one response, regardless of success.
     case 'frontFlip':
       gunther.frontFlip(function(){
-        res.send(JSON.parse('{"response": "frontFlip"}'));
       });
+      res.send(JSON.parse('{"response": "frontFlip"}'));
+
       break;
     case 'backFlip':
       gunther.backFlip(function(){
-        res.send(JSON.parse('{"response": "backFlip"}'));
       });
+      res.send(JSON.parse('{"response": "backFlip"}'));
       break;
     case 'rightFlip':
       gunther.rightFlip(function(){
-        res.send(JSON.parse('{"response": "rightFlip"}'));
       });
+      res.send(JSON.parse('{"response": "rightFlip"}'));
       break;
       case 'leftFlip':
         gunther.leftFlip(function(){
-          res.send(JSON.parse('{"response": "leftFlip"}'));
         });
-        break;
+        res.send(JSON.parse('{"response": "leftFlip"}'));
+      break;
+      default:
+      //none
   }
 });
 

@@ -30,8 +30,14 @@ Instructions
 
 *Instructions*
 
-* clone this repo to a directory
+* clone this repo to a directory and `cd GuntherDrone`
 * run `npm install`
 * run `gulp`
+
+*Bugs* this is the first run, so expect a few bugs
+
+* Flips of any kind causes errors with the express router. I'll try and get a fix in, or you're welcome to pull request
+
+
 
 
