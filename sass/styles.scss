@@ -1,0 +1,167 @@
+@import 'reset';
+@import 'animate/animate';
+@import 'bootstrap/bootstrap';
+
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,700,300);
+
+//Color Defs
+$g_red: #b5292a;
+$g_blue: #1261c9;
+$g_violet: #675fd6;
+$g_orange: #d76817;
+$g_green: #30a443;
+
+$g_red_dark: #690000;
+$g_blue_dark: #073b7d;
+$g_violet_dark: #2b20b5;
+$g_orange_dark: #853800;
+$g_green_dark: #066f18;
+
+$g_red_disabled: #f88080;
+$g_blue_disabled: #5e93d7;
+$g_violet_disabled: #b6b1f3;
+$g_orange_disabled: #ffac6e;
+$g_green_disabled: #7cd38b;
+
+h1, h2, h3, h4{
+    letter-spacing: 0.02em;
+    font-family: 'Roboto', sans-serif;
+}
+h1{
+    font-size: 3.2em;
+    font-weight: 700;
+}
+h2{
+    font-size: 2.4em;
+    font-weight: 300;
+}
+button{
+    color: #fff !important;
+}
+.hero{
+    height: 40vh;
+    width: 100%;
+    background-color: red;
+    z-index: 99;
+    overflow:hidden;
+    position:relative;
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.36), 0 2px 5px 0 rgba(0, 0, 0, 0.50);
+
+    h1{
+        width: 100%;
+        position: absolute;
+        z-index: 15;
+        color: #fff;
+        text-align: center;
+        padding-top: 15vh;
+        -webkit-font-smoothing: antialiased;
+        text-shadow: 0.02em 0.02em 0.1em rgba(0,0,0,0.65);
+    }
+    .hero-overlay{
+        position: absolute;
+        top:0 ; bottom: 0; right: 0; left: 0;
+        background-color: rgba(0,0,0,0.35);
+        z-index:11;
+    }
+    video{
+        position: relative;
+        bottom: 230px;
+        z-index:10;
+    }
+}
+#dashboard{
+    .hidden{
+        display: none;
+    }
+    .showing{
+        display: block;
+    }
+    margin-top: 40px;
+    .g-btn-master{
+        background-color: $g_blue;
+        border-color:$g_blue_dark;
+        &:hover{
+            background-color:$g_blue_dark;
+        }
+    }
+    .g-btn-master.disabled{
+        background-color: $g_blue_disabled;
+    }
+    .g-btn-fly{
+        background-color: $g_green;
+        border-color:$g_green_dark;
+        &:hover{
+            background-color:$g_green_dark;
+        }
+    }
+    .g-btn-fly.disable{
+        background-color: $g_green_disabled;
+    }
+    .g-btn-land{
+        background-color: $g_orange;
+        border-color:$g_orange_dark;
+        &:hover{
+            background-color:$g_orange_dark;
+        }
+    }
+    .g-btn-land.disable{
+        background-color: $g_orange_disabled;
+    }
+    .g-btn-die{
+        background-color: $g_red;
+        border-color:$g_red_dark;
+        &:hover{
+            background-color:$g_red_dark;
+        }
+    }
+    .g-btn-die.disabled{
+        background-color: $g_red_disabled;
+    }
+    .g-btn-top-two{
+        background-color: $g_violet;
+        border-color:$g_violet_dark;
+        &:hover{
+            background-color:$g_violet_dark;
+        }
+    }
+    .g-btn-top-two.disabled{
+        background-color: $g_violet_disabled;
+    }
+    .g-btn-basic-control{
+        background-color: $g_orange;
+        border-color:$g_orange_dark;
+        &:hover{
+            background-color:$g_orange_dark;
+        }
+    }
+    .g-btn-basic-control.disabled{
+        background-color: $g_orange_disabled;
+    }
+    .drone-status{
+        padding: 12px 0 12px 0;
+        h4{
+            font-weight: 300;
+        }
+    }
+    .drone-candidate{
+        color: #fff;
+        background-color: $g_violet;
+        border-color: $g_violet_dark;
+        &:hover{
+            cursor: pointer;
+            background-color: $g_violet_dark;
+        }
+    }
+    .controls-wrapper{
+        h3{
+            padding: 0 0 20px 0;
+            font-weight: 300;
+        }
+        .control-row{
+            padding: 6px 0 6px 0;
+        }
+        .top-control-row{
+            padding-bottom: 24px;
+        }
+    }
+}

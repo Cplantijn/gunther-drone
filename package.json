@@ -1,0 +1,35 @@
+{
+  "name": "gunther-dashboard",
+  "version": "1.0.0",
+  "description": "Dashboard control for Parrot Rolling Spider drone, affectionately called Gunther",
+  "main": "drone.js",
+  "scripts": {
+    "start": "node drone.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ar",
+    "drone",
+    "rolling-spider",
+    "parrot",
+    "ar-drone"
+  ],
+  "author": "Christopher S Plantijn",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.12.4",
+    "express": "^4.12.4",
+    "gulp-live-server": "0.0.20",
+    "noble": "^1.0.1",
+    "path": "^0.11.14",
+    "rolling-spider": "^1.3.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.5.2",
+    "gulp-jshint": "^1.11.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.0.1",
+    "gulp-uglify": "^1.2.0"
+  }
+}
