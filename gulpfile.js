@@ -23,7 +23,7 @@ gulp.task('sass', function(){
 
 //watch
 gulp.task('watch', function(){
-    gulp.watch(['*.js','**/**/*.js', '**/**/*.jsx'], ['lint', 'run']);
+    gulp.watch(['drone.js','public/js/*.js', '**/public/*.jsx'], ['lint', 'run']);
     gulp.watch('sass/*.scss', ['sass', 'run']);
 });
 

@@ -6,22 +6,35 @@ var DashboardBox = React.createClass({
             buttonAction: this.search,
             actionButtonClass: "btn-primary btn-block g-btn-master",
             batteryLevel: 'N/A',
+            inAir: false,
             controlsVisibility: 'hidden',
             availableDrones: []
         };
     },
     componentDidMount: function(){
-      setInterval(this.fetchBatteryInfo, 5000);
+      setInterval(this.fetchGuntherStatus, 5000);
     },
-    fetchBatteryInfo: function(){
+    fetchGuntherStatus: function(){
       $.ajax({
-        url: '/battery',
-        dataType: 'text',
+        url: '/gunther/get/status',
+        dataType: 'json',
         cache: false,
         success: function(data) {
-          this.setState({
-            batteryLevel: data,
-          });
+          if(inAir && !data.flying){
+            this.setState({
+              inAir: false,
+              batteryLevel: data.battery,
+              flyLandLabel: 'Take Off',
+              droneStatus: 'Gunther has crashed. You may have to reconnect.',
+              flyStateAction: this.takeoff,
+              flyLandStateClass: 'btn-block g-btn-fly',
+              flyButtonClass: ''
+            });
+          }else{
+            this.setState({
+              batteryLevel: data.battery,
+            });
+          }
         }.bind(this),
         error: function(xhr, status, err) {
           this.setState({
@@ -37,9 +50,7 @@ var DashboardBox = React.createClass({
           availableDrones: []
         });
         $.ajax({
-          url: this.props.url,
-          type:'post',
-          data:{action: 'search'},
+          url: this.props.url + '/search',
           dataType: 'json',
           cache: false,
           success: function(data) {
@@ -64,13 +75,14 @@ var DashboardBox = React.createClass({
     connect: function(uuid) {
       this.setState({ droneStatus: 'Connecting to Gunther...'});
         $.ajax({
-          url: this.props.url,
+          url: this.props.url + '/connect',
           type:'post',
-          data:{action: 'connect', uuid: uuid},
+          data:{uuid: uuid},
           dataType: 'json',
           cache: false,
           success: function(data) {
             this.setState({
+              inAir: false,
               buttonLabel: 'Disconnect',
               flyLandLabel: 'Take Off',
               flyStateAction: this.takeoff,
@@ -88,9 +100,7 @@ var DashboardBox = React.createClass({
     },
     disconnect: function(){
       $.ajax({
-        url: this.props.url,
-        type:'post',
-        data:{action: 'disconnect'},
+        url: this.props.url + '/disconnect',
         dataType: 'json',
         cache: false,
         complete: function(data) {
@@ -109,13 +119,12 @@ var DashboardBox = React.createClass({
     },
     takeoff: function() {
       this.setState({
+        inAir: true,
         flyButtonClass: 'disabled',
         droneStatus: 'Gunther is taking off!',
       })
         $.ajax({
-          url: this.props.url,
-          type:'post',
-          data:{action: 'takeoff'},
+          url: this.props.url + '/takeoff',
           dataType: 'json',
           cache: false,
           success: function(data) {
@@ -134,9 +143,7 @@ var DashboardBox = React.createClass({
     land: function() {
       this.setState({flyButtonClass: 'disabled'})
         $.ajax({
-          url: this.props.url,
-          type:'post',
-          data:{action: 'land'},
+          url: this.props.url + '/land',
           dataType: 'json',
           cache: false,
           success: function(data) {
@@ -158,15 +165,13 @@ var DashboardBox = React.createClass({
         droneStatus: 'Abandon ship! Gunther is crash landing!',
       })
         $.ajax({
-          url: this.props.url,
-          type:'post',
-          data:{action: 'die'},
+          url: this.props.url + '/die',
           dataType: 'json',
           cache: false,
           complete: function(data) {
             this.setState({
               flyLandLabel: 'Take Off',
-              droneStatus: 'Gunther has crashed. You will have to reconnect.',
+              droneStatus: 'Gunther has crashed. You may have to reconnect.',
               flyStateAction: this.takeoff,
               flyLandStateClass: 'btn-block g-btn-fly',
               flyButtonClass: ''
@@ -182,9 +187,7 @@ var DashboardBox = React.createClass({
         droneStatus: 'Gunther is climbing',
       })
         $.ajax({
-          url: this.props.url,
-          type:'post',
-          data:{action: 'ascend'},
+          url: this.props.url + '/ascend',
           dataType: 'json',
           cache: false,
           complete: function(data) {
@@ -203,9 +206,7 @@ var DashboardBox = React.createClass({
         droneStatus: 'Gunther is descending',
       })
         $.ajax({
-          url: this.props.url,
-          type:'post',
-          data:{action: 'descend'},
+          url: this.props.url + '/descend',
           dataType: 'json',
           cache: false,
           complete: function(data) {
@@ -224,9 +225,7 @@ var DashboardBox = React.createClass({
         droneStatus: 'Gunther is moving ahead',
       })
         $.ajax({
-          url: this.props.url,
-          type:'post',
-          data:{action: 'forward'},
+          url: this.props.url + '/forward',
           dataType: 'json',
           cache: false,
           complete: function(data) {
@@ -245,9 +244,7 @@ var DashboardBox = React.createClass({
         droneStatus: 'Gunther is moving backwards',
       })
         $.ajax({
-          url: this.props.url,
-          type:'post',
-          data:{action: 'backward'},
+          url: this.props.url + '/backward',
           dataType: 'json',
           cache: false,
           complete: function(data) {
@@ -266,9 +263,7 @@ var DashboardBox = React.createClass({
         droneStatus: 'Gunther is strafing left',
       })
         $.ajax({
-          url: this.props.url,
-          type:'post',
-          data:{action: 'strafeLeft'},
+          url: this.props.url + '/strafe/left',
           dataType: 'json',
           cache: false,
           complete: function(data) {
@@ -287,9 +282,7 @@ var DashboardBox = React.createClass({
         droneStatus: 'Gunther is strafing right',
       })
         $.ajax({
-          url: this.props.url,
-          type:'post',
-          data:{action: 'strafeRight'},
+          url: this.props.url + '/strafe/right',
           dataType: 'json',
           cache: false,
           complete: function(data) {
@@ -308,9 +301,7 @@ var DashboardBox = React.createClass({
         droneStatus: 'Gunther is turning 45 degrees to the left',
       })
         $.ajax({
-          url: this.props.url,
-          type:'post',
-          data:{action: 'turnLeft'},
+          url: this.props.url + '/turn/left',
           dataType: 'json',
           cache: false,
           complete: function(data) {
@@ -329,9 +320,7 @@ var DashboardBox = React.createClass({
         droneStatus: 'Gunther is turning 45 degrees to the right',
       })
         $.ajax({
-          url: this.props.url,
-          type:'post',
-          data:{action: 'turnRight'},
+          url: this.props.url + '/turn/right',
           dataType: 'json',
           cache: false,
           complete: function(data) {
@@ -350,9 +339,7 @@ var DashboardBox = React.createClass({
         droneStatus: 'Gunther doing a front flip!',
       })
         $.ajax({
-          url: this.props.url,
-          type:'post',
-          data:{action: 'frontFlip'},
+          url: this.props.url + '/flip/front',
           dataType: 'json',
           cache: false,
           complete: function(data) {
@@ -371,9 +358,7 @@ var DashboardBox = React.createClass({
         droneStatus: 'Gunther doing a back flip!',
       })
         $.ajax({
-          url: this.props.url,
-          type:'post',
-          data:{action: 'backFlip'},
+          url: this.props.url + '/flip/back',
           dataType: 'json',
           cache: false,
           complete: function(data) {
@@ -392,9 +377,7 @@ var DashboardBox = React.createClass({
         droneStatus: 'Gunther is flipping to the left!',
       })
         $.ajax({
-          url: this.props.url,
-          type:'post',
-          data:{action: 'leftFlip'},
+          url: this.props.url + '/flip/left',
           dataType: 'json',
           cache: false,
           complete: function(data) {
@@ -413,9 +396,7 @@ var DashboardBox = React.createClass({
         droneStatus: 'Gunther is flipping to the right!',
       })
         $.ajax({
-          url: this.props.url,
-          type:'post',
-          data:{action: 'rightFlip'},
+          url: this.props.url + '/flip/right',
           dataType: 'json',
           cache: false,
           complete: function(data) {
@@ -574,4 +555,4 @@ var Drone = React.createClass({
 
 
 //Complete Render
-React.render(<DashboardBox url="gunther"/>, document.getElementById('dashboard'));
+React.render(<DashboardBox url="/gunther"/>, document.getElementById('dashboard'));
